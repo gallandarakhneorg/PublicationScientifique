@@ -1,5 +1,8 @@
 package fr.utbm.to52.domain;
 
+import javax.persistence.Entity;
+
+
 public enum Status {
 
 
@@ -11,8 +14,10 @@ public enum Status {
     Postdoc ("Post-Doctorant"),
     PR ("Professeur des Universités"),
     STA ("Stagiaire"),
+    SC ("Sans Contrat"),
+    SS ("Sans Statut"),
+    TECHNICIEN ("Technicien"),
     MCF ("Maître de Conférences");
-
 
     private String name = "";
     private String codeStatus = "";

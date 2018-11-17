@@ -3,7 +3,11 @@
  */
 package fr.utbm.to52.domain;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,16 +16,19 @@ import java.util.Set;
  * @author To52
  *
  */
-
+@TypeDef(
+        name = "pgsql_enum",
+        typeClass = PostgreSQLEnumType.class
+)
 @Entity
-public class Member {
+public class Member implements Serializable {
 
     /**
      *
      */
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(nullable=false, updatable=false)
+    @Column(name="id_member",nullable=false, updatable=false)
     private long idMember;
 
     @OneToOne
@@ -44,16 +51,18 @@ public class Member {
     private String login;
 
     @Column(nullable=false)
-    private String password;
-
-    @Column(nullable=false)
     private String email;
 
     @Column
     private String session;
 
-    @Column(nullable=false)
+    @Enumerated(EnumType.STRING)
+    @Column(nullable=false,columnDefinition = "member_status")
+    @Type( type = "pgsql_enum" )
     private Status status;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
+    private Set<Project> managerprojects = new HashSet<Project>(0);
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
@@ -61,20 +70,26 @@ public class Member {
             joinColumns = { @JoinColumn(name = "idMember") },
             inverseJoinColumns = { @JoinColumn(name = "idProject") }
     )
-    Set<Project> projects = new HashSet<>();
+    private Set<Project> projects = new HashSet<Project>(0);
 
-    public Member(long idMember, Address addresss, String lastName, String firstName, String linkImage, Date startDate, String login, String password, String email, String session, Status status) {
-        this.idMember = idMember;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id.member", cascade=CascadeType.ALL)
+    private Set<Author> authors = new HashSet<Author>(0);
+
+
+    public Member(long idMember, Address addresss, String lastName, String firstName, String linkImage, Date startDate, String login, String email, String session, Status status, Set<Project> projects, Set<Project> managerprojects, Set<Author> authors) {
+
         Addresss = addresss;
         this.lastName = lastName;
         this.firstName = firstName;
         this.linkImage = linkImage;
         this.startDate = startDate;
         this.login = login;
-        this.password = password;
         this.email = email;
         this.session = session;
         this.status = status;
+        this.projects= projects;
+        this.managerprojects=managerprojects;
+        this.authors= authors;
     }
 
     public Member() {
@@ -139,14 +154,6 @@ public class Member {
         this.login = login;
     }
 
-    public String getPassWord() {
-        return password;
-    }
-
-    public void setPassWord(String passWord) {
-        password = passWord;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -163,12 +170,43 @@ public class Member {
         this.session = session;
     }
 
-    public fr.utbm.to52.domain.Status getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(fr.utbm.to52.domain.Status status) {
+    public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Set<Project> getManagerprojects() {
+        return managerprojects;
+    }
+
+    public void setManagerprojects(Set<Project> managerprojects) {
+        this.managerprojects = managerprojects;
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
+    }
+
+
+    /**
+     * @return the projects
+     */
+    public Set<Project> getProjects() {
+        return this.projects;
+    }
+
+    /**
+     * @param projects the participants to set
+     */
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
     }
 
 }

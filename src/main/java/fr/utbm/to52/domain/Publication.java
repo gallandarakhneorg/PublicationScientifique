@@ -3,11 +3,13 @@ package fr.utbm.to52.domain;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public  class Publication implements Serializable {
+public  abstract class Publication implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -16,7 +18,8 @@ public  class Publication implements Serializable {
     @Column(name = "id_publication")
     private long idPublication;
 
-    @Column
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_publication_type", nullable = false)
     private PublicationType publicationType;
 
     @Column(nullable=false)
@@ -49,8 +52,16 @@ public  class Publication implements Serializable {
     @Column(nullable=false)
     private String keyWords;
 
-    public Publication(long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Date year, Date month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords) {
-        this.idPublication = idPublication;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_project", nullable = false)
+    private Project project;
+
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id.publication", cascade=CascadeType.ALL)
+    private Set<Author> authors = new HashSet<Author>(0);
+
+    public Publication(long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Date year, Date month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Project project, Set<Author> authors) {
+
         this.publicationType = publicationType;
         this.englishTitle = englishTitle;
         this.frenchTitle = frenchTitle;
@@ -62,6 +73,8 @@ public  class Publication implements Serializable {
         this.issn = issn;
         Abstract = anAbstract;
         this.keyWords = keyWords;
+        this.project= project;
+        this.authors= authors;
     }
 
     public Publication() {
@@ -164,6 +177,23 @@ public  class Publication implements Serializable {
     public void setKeyWords(String keyWords) {
         this.keyWords = keyWords;
     }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
+    }
+
 
     @Override
     public boolean equals(Object o) {
