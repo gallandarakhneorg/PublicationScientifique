@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface MemberDao extends CrudRepository<Member, Long> {
+
+    public Member findByFirstName(String pMemberFirstName);
 }

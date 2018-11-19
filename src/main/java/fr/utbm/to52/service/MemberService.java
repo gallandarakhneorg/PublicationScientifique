@@ -8,6 +8,7 @@ import fr.utbm.to52.domain.Member;
  */
 public interface MemberService {
 
-    public Member create (Member pmember);
-    public Member delete (Long id);
+    public Member create (Member pMember);
+    public void delete (Long id);
+    public boolean checkIfMemberNameExist(String pMemberFirstName, String pMemberLastName);
 }
