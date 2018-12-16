@@ -1,38 +1,56 @@
 package fr.utbm.to52.domain;
 
-public enum Status {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
+@Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Status {
 
-    ECC ("Enseignant Chercheur Contractuel"),
-    IGR ("Ingénieur de Recherche"),
-    IGE ("Ingénieur d'Etude"),
-    MCF_HDR ("Maître de Conférences avec HDR"),
-    ADM ("Personnel Administratif"),
-    Postdoc ("Post-Doctorant"),
-    PR ("Professeur des Universités"),
-    STA ("Stagiaire"),
-    MCF ("Maître de Conférences");
+    @Id
+    @Column(name="id_status",nullable=false)
+    private String code;
 
+    @Column(name="label",nullable=false)
+    private String statusLabel;
 
-    private String name = "";
-    private String codeStatus = "";
+    public Status(String code, String statusLabel) {
+        this.code = code;
+        this.statusLabel = statusLabel;
+    }
 
+    
     //Constructeur
-    Status(String name, String codeStatus){
-        this.name = name;
-        this.codeStatus= codeStatus;
+    public Status()
+    {
+        
     }
 
-    Status(String name){
-        this.name = name;
+    public String getCode() {
+        return code;
     }
 
-
-    public String toString(){
-        return name;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getCodestatus(){
-        return codeStatus;
+    public String getStatusLabel() {
+        return statusLabel;
     }
+
+    public void setStatusLabel(String statusLabel) {
+        this.statusLabel = statusLabel;
+    }
+
+    @Override
+    public String toString() {
+        return "Status{" + "code=" + code + ", statusLabel=" + statusLabel + '}';
+    }
+    
+    
+    
 }
