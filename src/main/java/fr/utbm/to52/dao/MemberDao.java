@@ -1,16 +1,21 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package fr.utbm.to52.dao;
 
+import fr.utbm.to52.domain.Author;
 import fr.utbm.to52.domain.Member;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-
 /**
- * @author to52
  *
+ * @author adilsoncapaia
  */
 @Repository
-public interface MemberDao extends CrudRepository<Member, Long> {
-
-    public Member findByFirstName(String pMemberFirstName);
+public interface MemberDao extends JpaRepository<Member, Long>{
+    
+    
 }

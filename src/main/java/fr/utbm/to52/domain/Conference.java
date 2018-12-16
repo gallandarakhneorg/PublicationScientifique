@@ -1,52 +1,60 @@
 package fr.utbm.to52.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.DiscriminatorValue;
 
 @Entity
+@DiscriminatorValue("Conference")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Conference extends Publication implements Serializable {
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String ConferenceName;
 
-    @Column(nullable = false)
-    private long Ranking;
+    @Column(nullable = true)
+    private Long Ranking;
 
     @Column
     private String Series;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String Pages;
 
-    @Column
-    private long Volume;
+    @Column(nullable = true)
+    private Long Volume;
 
-    @Column
+    @Column(nullable = true)
     private String Publisher;
 
-    @Column
+    @Column(nullable = true)
     private String Organization;
 
-    @Column
+    @Column(nullable = true)
     private String Editor;
 
-    public Conference(long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Date year, Date month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Project project, Set<Author> authors, String conferenceName, long ranking, String series, String pages, long volume, String publisher, String organization, String editor) {
-        super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords, project, authors);
-        ConferenceName = conferenceName;
-        Ranking = ranking;
-        Series = series;
-        Pages = pages;
-        Volume = volume;
-        Publisher = publisher;
-        Organization = organization;
-        Editor = editor;
+    public Conference(String ConferenceName, Long Ranking, String Series, String Pages, Long Volume, String Publisher, String Organization, String Editor, Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords,Set<Author> authors) {
+        super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords,authors);
+        this.ConferenceName = ConferenceName;
+        this.Ranking = Ranking;
+        this.Series = Series;
+        this.Pages = Pages;
+        this.Volume = Volume;
+        this.Publisher = Publisher;
+        this.Organization = Organization;
+        this.Editor = Editor;
     }
 
-    public Conference(String conferenceName, long ranking, String series, String pages, long volume, String publisher, String organization, String editor) {
+    
+
+    public Conference(String conferenceName, Long ranking, String series, String pages, Long volume, String publisher, String organization, String editor) {
         ConferenceName = conferenceName;
         Ranking = ranking;
         Series = series;
@@ -69,11 +77,11 @@ public class Conference extends Publication implements Serializable {
         ConferenceName = conferenceName;
     }
 
-    public long getRanking() {
+    public Long getRanking() {
         return Ranking;
     }
 
-    public void setRanking(long ranking) {
+    public void setRanking(Long ranking) {
         Ranking = ranking;
     }
 
@@ -93,11 +101,11 @@ public class Conference extends Publication implements Serializable {
         Pages = pages;
     }
 
-    public long getVolume() {
+    public Long getVolume() {
         return Volume;
     }
 
-    public void setVolume(long volume) {
+    public void setVolume(Long volume) {
         Volume = volume;
     }
 
@@ -145,4 +153,11 @@ public class Conference extends Publication implements Serializable {
     public int hashCode() {
         return Objects.hash(super.hashCode(), getConferenceName(), getRanking(), getSeries(), getPages(), getVolume(), getPublisher(), getOrganization(), getEditor());
     }
+
+    @Override
+    public String toString() {
+        return "Conference{" + "ConferenceName=" + ConferenceName + ", Ranking=" + Ranking + ", Series=" + Series + ", Pages=" + Pages + ", Volume=" + Volume + ", Publisher=" + Publisher + ", Organization=" + Organization + ", Editor=" + Editor + '}';
+    }
+    
+    
 }

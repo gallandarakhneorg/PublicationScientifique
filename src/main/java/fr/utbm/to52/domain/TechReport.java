@@ -1,26 +1,34 @@
 package fr.utbm.to52.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.DiscriminatorValue;
 
 @Entity
+@DiscriminatorValue("TechReport")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TechReport extends Publication implements Serializable {
 
-    @Column
+    @Column(nullable = true)
     private String Institution;
 
-    @Column
+    @Column(nullable = true)
     private String Number;
 
-    public TechReport(long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Date year, Date month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Project project, Set<Author> authors, String institution, String number) {
-        super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords, project, authors);
-        Institution = institution;
-        Number = number;
+    public TechReport(String Institution, String Number, long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, long year, long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Set<Author> authors) {
+        super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords, authors);
+        this.Institution = Institution;
+        this.Number = Number;
     }
+
+    
 
     public TechReport(String institution, String number) {
         Institution = institution;

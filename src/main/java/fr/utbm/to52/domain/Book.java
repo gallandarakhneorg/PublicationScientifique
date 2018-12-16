@@ -1,38 +1,46 @@
 package fr.utbm.to52.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.DiscriminatorValue;
 
 @Entity
+@DiscriminatorValue("Book")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Book extends Publication implements Serializable {
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String Isbn;
 
-    @Column
+    @Column(nullable = true)
     private String Series;
 
-    @Column
+    @Column(nullable = true)
     private String Volume;
 
-    @Column
+    @Column(nullable = true)
     private String Publisher;
 
-    @Column
+    @Column(nullable = true)
     private String Edition;
 
-    public Book(long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Date year, Date month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Project project, Set<Author> authors, String isbn, String series, String volume, String publisher, String edition) {
-        super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords, project, authors);
-        Isbn = isbn;
-        Series = series;
-        Volume = volume;
-        Publisher = publisher;
-        Edition = edition;
+    public Book(String Isbn, String Series, String Volume, String Publisher, String Edition, Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords,Set<Author> authors) {
+        super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords,authors);
+        this.Isbn = Isbn;
+        this.Series = Series;
+        this.Volume = Volume;
+        this.Publisher = Publisher;
+        this.Edition = Edition;
     }
+
+    
 
     public Book(String isbn, String series, String volume, String publisher, String edition) {
         Isbn = isbn;

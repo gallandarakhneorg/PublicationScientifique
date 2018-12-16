@@ -1,38 +1,46 @@
 package fr.utbm.to52.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.DiscriminatorValue;
 
 @Entity
+@DiscriminatorValue("Proceeding")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Proceeding extends Publication implements Serializable {
 
-    @Column
+    @Column(nullable = true)
     private String Editor;
 
-    @Column
+    @Column(nullable = true)
     private String Volume;
 
-    @Column
+    @Column(nullable = true)
     private String Series;
 
-    @Column
+    @Column(nullable = true)
     private String Organization;
 
-    @Column
+    @Column(nullable = true)
     private String Publisher;
 
-    public Proceeding(long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Date year, Date month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Project project, Set<Author> authors, String editor, String volume, String series, String organization, String publisher) {
-        super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords, project, authors);
-        Editor = editor;
-        Volume = volume;
-        Series = series;
-        Organization = organization;
-        Publisher = publisher;
+    public Proceeding(String Editor, String Volume, String Series, String Organization, String Publisher, Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Set<Author> authors) {
+        super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords, authors);
+        this.Editor = Editor;
+        this.Volume = Volume;
+        this.Series = Series;
+        this.Organization = Organization;
+        this.Publisher = Publisher;
     }
+
+    
 
     public Proceeding(String editor, String volume, String series, String organization, String publisher) {
         Editor = editor;

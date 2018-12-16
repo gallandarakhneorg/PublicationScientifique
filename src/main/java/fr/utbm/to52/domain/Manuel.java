@@ -1,36 +1,43 @@
 package fr.utbm.to52.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.DiscriminatorValue;
 
 @Entity
+@DiscriminatorValue("Manuel")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Manuel extends Publication implements Serializable {
 
-    @Column
+    @Column(nullable = true)
     private String Organization;
 
-    @Column
+    @Column(nullable = true)
     private String Edition;
 
-    @Column
+    @Column(nullable = true)
     private String Institution;
 
-    @Column
+    @Column(nullable = true)
     private String Number;
 
-    public Manuel(long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Date year, Date month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Project project, Set<Author> authors, String organization, String edition, String institution, String number) {
-
-        super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords, project, authors);
-        Organization = organization;
-        Edition = edition;
-        Institution = institution;
-        Number = number;
+    public Manuel(String Organization, String Edition, String Institution, String Number, Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Set<Author> authors) {
+        super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords, authors);
+        this.Organization = Organization;
+        this.Edition = Edition;
+        this.Institution = Institution;
+        this.Number = Number;
     }
 
+    
+    
     public Manuel(String organization, String edition, String institution, String number) {
         Organization = organization;
         Edition = edition;

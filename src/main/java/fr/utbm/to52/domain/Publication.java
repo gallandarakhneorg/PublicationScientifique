@@ -1,22 +1,31 @@
 package fr.utbm.to52.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import static javax.persistence.EnumType.STRING;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public  abstract class Publication implements Serializable {
+@DiscriminatorColumn(name="dtype")
+@DiscriminatorValue("Publication")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public  class Publication implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final Long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_publication")
-    private long idPublication;
+    private Long idPublication;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_publication_type", nullable = false)
@@ -25,42 +34,61 @@ public  abstract class Publication implements Serializable {
     @Column(nullable=false)
     private String englishTitle;
 
-    @Column(nullable=false)
+    @Column(nullable=true)
     private String frenchTitle;
 
     @Column(nullable=false)
-    private Date year;
+    private Long year;
 
     @Column(nullable=false)
-    private Date month;
+    private Long month;
 
-    @Column(nullable=false)
+    @Column(nullable=true)
     private String note;
 
-    @Column(nullable=false)
+    @Column(nullable=true)
     private String linkImage;
 
-    @Column(nullable=false)
+    @Column(nullable=true)
     private String pdfLink;
 
-    @Column(nullable=false)
+    @Column(nullable=true)
     private String issn;
 
-    @Column(nullable=false)
+    @Column(nullable=true)
     private String Abstract;
 
-    @Column(nullable=false)
+    @Column(nullable=true)
     private String keyWords;
-
+    /*
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_project", nullable = false)
-    private Project project;
+    @JoinColumn(name = "id_project", nullable = true)
+    private Project project;  */
 
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id.publication", cascade=CascadeType.ALL)
+  
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "publication" , cascade=CascadeType.ALL)
+    //@JsonBackReference
     private Set<Author> authors = new HashSet<Author>(0);
 
-    public Publication(long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Date year, Date month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Project project, Set<Author> authors) {
+    public Publication(Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String Abstract, String keyWords /*, Project project */) {
+        this.idPublication = idPublication;
+        this.publicationType = publicationType;
+        this.englishTitle = englishTitle;
+        this.frenchTitle = frenchTitle;
+        this.year = year;
+        this.month = month;
+        this.note = note;
+        this.linkImage = linkImage;
+        this.pdfLink = pdfLink;
+        this.issn = issn;
+        this.Abstract = Abstract;
+        this.keyWords = keyWords;
+       // this.project = project;
+    }
+
+    
+    
+    public Publication(Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Set<Author> authors) {
 
         this.publicationType = publicationType;
         this.englishTitle = englishTitle;
@@ -73,7 +101,6 @@ public  abstract class Publication implements Serializable {
         this.issn = issn;
         Abstract = anAbstract;
         this.keyWords = keyWords;
-        this.project= project;
         this.authors= authors;
     }
 
@@ -82,11 +109,11 @@ public  abstract class Publication implements Serializable {
 
     }
 
-    public long getIdPublication() {
+    public Long getIdPublication() {
         return idPublication;
     }
 
-    public void setIdPublication(long idPublication) {
+    public void setIdPublication(Long idPublication) {
         this.idPublication = idPublication;
     }
 
@@ -114,19 +141,19 @@ public  abstract class Publication implements Serializable {
         this.frenchTitle = frenchTitle;
     }
 
-    public Date getYear() {
+    public Long getYear() {
         return year;
     }
 
-    public void setYear(Date year) {
+    public void setYear(Long year) {
         this.year = year;
     }
 
-    public Date getMonth() {
+    public Long getMonth() {
         return month;
     }
 
-    public void setMonth(Date month) {
+    public void setMonth(Long month) {
         this.month = month;
     }
 
@@ -177,14 +204,14 @@ public  abstract class Publication implements Serializable {
     public void setKeyWords(String keyWords) {
         this.keyWords = keyWords;
     }
-
+    /*
     public Project getProject() {
         return project;
     }
 
     public void setProject(Project project) {
         this.project = project;
-    }
+    } */
 
     public Set<Author> getAuthors() {
         return authors;
@@ -218,4 +245,12 @@ public  abstract class Publication implements Serializable {
     public int hashCode() {
         return Objects.hash(getIdPublication(), getPublicationType(), getEnglishTitle(), getFrenchTitle(), getYear(), getMonth(), getNote(), getLinkImage(), getPdfLink(), getIssn(), getAbstract(), getKeyWords());
     }
+    /*
+    @Override
+    public String toString() {
+        return "Publication{" + "idPublication=" + idPublication + ", publicationType=" + publicationType + ", englishTitle=" + englishTitle + ", frenchTitle=" + frenchTitle + ", year=" + year + ", month=" + month + ", note=" + note + ", linkImage=" + linkImage + ", pdfLink=" + pdfLink + ", issn=" + issn + ", Abstract=" + Abstract + ", keyWords=" + keyWords + ", authors=" + authors + '}';
+    } */
+    
+    
+   
 }

@@ -1,8 +1,11 @@
 package fr.utbm.to52.dao;
 
 
+
 import fr.utbm.to52.domain.PublicationType;
+import java.util.List;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,5 +13,6 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository
-public interface PublicationTypeDao extends CrudRepository<PublicationType,String> {
+public interface PublicationTypeDao extends JpaRepository<PublicationType,String> {
+    //List<PublicationType> findByPublicationId(String memberId);
 }

@@ -3,6 +3,8 @@
  */
 package fr.utbm.to52.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.*;
 
 /**
@@ -11,6 +13,8 @@ import javax.persistence.*;
  */
 
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Address {
 
     /**
@@ -22,10 +26,10 @@ public class Address {
     @Column(nullable=false, updatable=false)
     private long idAddress;
 
-    @Column(nullable=false)
+    @Column(nullable=true)
     private String city;
 
-    @Column(nullable=false)
+    @Column(nullable=true)
     private String zipcode;
 
     public Address(long idAddress, String city, String zipcode) {

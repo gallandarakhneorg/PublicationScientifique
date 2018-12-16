@@ -1,41 +1,49 @@
 package fr.utbm.to52.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.DiscriminatorValue;
 
 @Entity
+@DiscriminatorValue("InBook")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class InBook extends Publication {
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String Chapter;
 
-    @Column
+    @Column(nullable = true)
     private String Pages;
 
-    @Column
+    @Column(nullable = true)
     private String Volume;
 
-    @Column
+    @Column(nullable = true)
     private String Series;
 
-    @Column
+    @Column(nullable = true)
     private String Edition;
 
-    @Column
+    @Column(nullable = true)
     private String Publisher;
 
-    public InBook(long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Date year, Date month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Project project, Set<Author> authors, String chapter, String pages, String volume, String series, String edition, String publisher) {
-        super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords, project, authors);
-        Chapter = chapter;
-        Pages = pages;
-        Volume = volume;
-        Series = series;
-        Edition = edition;
-        Publisher = publisher;
+    public InBook(String Chapter, String Pages, String Volume, String Series, String Edition, String Publisher, Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords,  Set<Author> authors) {
+        super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords, authors);
+        this.Chapter = Chapter;
+        this.Pages = Pages;
+        this.Volume = Volume;
+        this.Series = Series;
+        this.Edition = Edition;
+        this.Publisher = Publisher;
     }
+
+    
 
     public InBook(String chapter, String pages, String volume, String series, String edition, String publisher) {
         Chapter = chapter;

@@ -1,57 +1,70 @@
 package fr.utbm.to52.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
+import static javax.persistence.EnumType.STRING;
 
 @Entity
-public abstract class Article extends Publication implements Serializable {
+@DiscriminatorValue("Article")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonInclude(Include.NON_NULL)
+public  class Article extends Publication implements Serializable {
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String Journal;
 
     @Column
     private String Publisher;
 
-    @Column(nullable = false)
-    private String Kartil;
+    @Column(nullable = true)
+    private Long Kartil;
 
-    @Column(nullable = false)
-    private long ImpactFactor;
+    @Column(nullable = true)
+    private Long ImpactFactor;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String BestPaperRank;
 
-    @Column
-    private String Number;
+    @Column(nullable = true)
+    private Long Number;
 
-    @Column
+    @Column(nullable = true)
     private String Editor;
 
-    @Column
-    private String Volume;
+    @Column(nullable = true)
+    private Long Volume;
 
-    @Column
-    private String Pages;
+    @Column(nullable = true)
+    private Long Pages;
 
-    public Article(long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Date year, Date month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Project project, Set<Author> authors, String journal, String publisher, String kartil, long impactFactor, String bestPaperRank, String number, String editor, String volume, String pages) {
-        super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords, project, authors);
-        Journal = journal;
-        Publisher = publisher;
-        Kartil = kartil;
-        ImpactFactor = impactFactor;
-        BestPaperRank = bestPaperRank;
-        Number = number;
-        Editor = editor;
-        Volume = volume;
-        Pages = pages;
+    
+    public Article(String Journal, String Publisher, Long Kartil, Long ImpactFactor, String BestPaperRank, Long Number, String Editor, Long Volume, Long Pages, Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords,Set<Author> authors) {
+        super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords, authors);
+        this.Journal = Journal;
+        this.Publisher = Publisher;
+        this.Kartil = Kartil;
+        this.ImpactFactor = ImpactFactor;
+        this.BestPaperRank = BestPaperRank;
+        this.Number = Number;
+        this.Editor = Editor;
+        this.Volume = Volume;
+        this.Pages = Pages;
     }
+    
+    
+    
 
-    public Article(String journal, String publisher, String kartil, long impactFactor, String bestPaperRank, String number, String editor, String volume, String pages) {
+    public Article(String journal, String publisher, Long kartil, Long impactFactor, String bestPaperRank, Long number, String editor, Long volume, Long pages) {
         Journal = journal;
         Publisher = publisher;
         Kartil = kartil;
@@ -83,19 +96,19 @@ public abstract class Article extends Publication implements Serializable {
         Publisher = publisher;
     }
 
-    public String getKartil() {
+    public Long getKartil() {
         return Kartil;
     }
 
-    public void setKartil(String kartil) {
+    public void setKartil(Long kartil) {
         Kartil = kartil;
     }
 
-    public long getImpactFactor() {
+    public Long getImpactFactor() {
         return ImpactFactor;
     }
 
-    public void setImpactFactor(long impactFactor) {
+    public void setImpactFactor(Long impactFactor) {
         ImpactFactor = impactFactor;
     }
 
@@ -107,11 +120,11 @@ public abstract class Article extends Publication implements Serializable {
         BestPaperRank = bestPaperRank;
     }
 
-    public String getNumber() {
+    public Long getNumber() {
         return Number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(Long number) {
         Number = number;
     }
 
@@ -123,19 +136,19 @@ public abstract class Article extends Publication implements Serializable {
         Editor = editor;
     }
 
-    public String getVolume() {
+    public Long getVolume() {
         return Volume;
     }
 
-    public void setVolume(String volume) {
+    public void setVolume(Long volume) {
         Volume = volume;
     }
 
-    public String getPages() {
+    public Long getPages() {
         return Pages;
     }
 
-    public void setPages(String pages) {
+    public void setPages(Long pages) {
         Pages = pages;
     }
 
@@ -162,5 +175,12 @@ public abstract class Article extends Publication implements Serializable {
     public int hashCode() {
         return Objects.hash(super.hashCode(), getJournal(), getPublisher(), getKartil(), getImpactFactor(), getBestPaperRank(), getNumber(), getEditor(), getVolume(), getPages());
     }
+
+    @Override
+    public String toString() {
+        return "Article{" + "Journal=" + Journal + ", Publisher=" + Publisher + ", Kartil=" + Kartil + ", ImpactFactor=" + ImpactFactor + ", BestPaperRank=" + BestPaperRank + ", Number=" + Number + ", Editor=" + Editor + ", Volume=" + Volume + ", Pages=" + Pages + '}';
+    }
+    
+    
 }
 

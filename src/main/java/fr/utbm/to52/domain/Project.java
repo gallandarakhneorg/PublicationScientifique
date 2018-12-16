@@ -3,6 +3,8 @@
  */
 package fr.utbm.to52.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,6 +16,8 @@ import java.util.Set;
  *
  */
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Project implements Serializable {
 
     /**
@@ -34,12 +38,12 @@ public class Project implements Serializable {
 
     @Column
     private Date creationdate;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
+    /*
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "project")//, mappedBy = "project"
     private Set<Publication> publications = new HashSet<Publication>(0);
 
     @ManyToMany(mappedBy = "projects")
-    private Set<Member> members = new HashSet<>();
+    private Set<Member> members = new HashSet<>(); */
 
     public Project(long idProject, Member manager, String name, Date creationdate) {
         this.manager = manager;
@@ -49,13 +53,14 @@ public class Project implements Serializable {
     public Project() {
 
     }
+    /*
     public Project(long idProject, Member manager, String name, Date creationdate, Set<Member> members, Set<Publication> publications) {
         this.manager = manager;
         this.name = name;
         this.creationdate = creationdate;
         this.members= members;
-        this.publications= publications;
-    }
+        this.publications= publications; 
+    }  */
 
     public long getIdProject() {
 
@@ -89,7 +94,7 @@ public class Project implements Serializable {
     public void setCreationdate(Date creationdate) {
         this.creationdate = creationdate;
     }
-
+    /*
     public Set<Member> getMembers() {
         return members;
     }
@@ -101,9 +106,10 @@ public class Project implements Serializable {
     public Set<Publication> getPublications() {
         return publications;
     }
-
+    
     public void setPublications(Set<Publication> publications) {
         this.publications = publications;
     }
+*/
 
 }

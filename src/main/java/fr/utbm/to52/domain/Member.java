@@ -3,6 +3,10 @@
  */
 package fr.utbm.to52.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -16,11 +20,10 @@ import java.util.Set;
  * @author To52
  *
  */
-@TypeDef(
-        name = "pgsql_enum",
-        typeClass = PostgreSQLEnumType.class
-)
+
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","status"})
 public class Member implements Serializable {
 
     /**
@@ -47,36 +50,39 @@ public class Member implements Serializable {
     @Column
     private Date startDate;
 
-    @Column(nullable=false)
+    @Column(nullable=true)
     private String login;
 
-    @Column(nullable=false)
+    @Column(nullable=true)
     private String email;
 
     @Column
     private String session;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable=false,columnDefinition = "member_status")
-    @Type( type = "pgsql_enum" )
+    @ManyToOne
     private Status status;
-
+    /*
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
-    private Set<Project> managerprojects = new HashSet<Project>(0);
+    private Set<Project> managerprojects = new HashSet<Project>(0); */
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    /*@ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
-            name = "member_project",
+            name = "author",
             joinColumns = { @JoinColumn(name = "idMember") },
-            inverseJoinColumns = { @JoinColumn(name = "idProject") }
-    )
-    private Set<Project> projects = new HashSet<Project>(0);
-
+            inverseJoinColumns = { @JoinColumn(name = "idPublication") }
+    ) */
+    
+    
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member" , cascade=CascadeType.ALL)
+    private Set<Author> authors = new HashSet<Author>(0);  
+    /*
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "id.member", cascade=CascadeType.ALL)
-    private Set<Author> authors = new HashSet<Author>(0);
+    @JsonBackReference
+    private Set<Author> authors = new HashSet<Author>(0); */
 
 
-    public Member(long idMember, Address addresss, String lastName, String firstName, String linkImage, Date startDate, String login, String email, String session, Status status, Set<Project> projects, Set<Project> managerprojects, Set<Author> authors) {
+    public Member(long idMember, Address addresss, String lastName, String firstName, String linkImage, Date startDate, String login, String email, String session, Status status /*, Set<Project> projects, Set<Project> managerprojects, Set<Author> authors */ ) {
 
         Addresss = addresss;
         this.lastName = lastName;
@@ -87,10 +93,12 @@ public class Member implements Serializable {
         this.email = email;
         this.session = session;
         this.status = status;
-        this.projects= projects;
+        /*this.projects= projects;
         this.managerprojects=managerprojects;
-        this.authors= authors;
+        this.authors= authors; */
     }
+    
+    
 
     public Member() {
 
@@ -178,14 +186,6 @@ public class Member implements Serializable {
         this.status = status;
     }
 
-    public Set<Project> getManagerprojects() {
-        return managerprojects;
-    }
-
-    public void setManagerprojects(Set<Project> managerprojects) {
-        this.managerprojects = managerprojects;
-    }
-
     public Set<Author> getAuthors() {
         return authors;
     }
@@ -194,19 +194,45 @@ public class Member implements Serializable {
         this.authors = authors;
     }
 
+    /*
+    public Set<Project> getManagerprojects() {
+        return managerprojects;
+    }
+
+    public void setManagerprojects(Set<Project> managerprojects) {
+        this.managerprojects = managerprojects;
+    } */
+    /*
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
+    } */
+
+   /* @Override
+    public String toString() {
+        return "Member{" + "idMember=" + idMember + ", Addresss=" + Addresss + ", lastName=" + lastName + ", firstName=" + firstName + ", linkImage=" + linkImage + ", startDate=" + startDate + ", login=" + login + ", email=" + email + ", session=" + session + ", status=" + status + '}';
+    }*/
+
 
     /**
      * @return the projects
-     */
+     
     public Set<Project> getProjects() {
         return this.projects;
     }
 
     /**
      * @param projects the participants to set
-     */
+     
     public void setProjects(Set<Project> projects) {
         this.projects = projects;
-    }
+    } */
+
+   
+    
+    
 
 }
