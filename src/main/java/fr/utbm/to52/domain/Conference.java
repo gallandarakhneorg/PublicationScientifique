@@ -26,7 +26,7 @@ public class Conference extends Publication implements Serializable {
     private String Series;
 
     @Column(nullable = true)
-    private String Pages;
+    private Long Pages;
 
     @Column(nullable = true)
     private Long Volume;
@@ -40,7 +40,7 @@ public class Conference extends Publication implements Serializable {
     @Column(nullable = true)
     private String Editor;
 
-    public Conference(String ConferenceName, Long Ranking, String Series, String Pages, Long Volume, String Publisher, String Organization, String Editor, Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords,Set<Author> authors) {
+    public Conference(String ConferenceName, Long Ranking, String Series, Long Pages, Long Volume, String Publisher, String Organization, String Editor, Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords,Set<Author> authors) {
         super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords,authors);
         this.ConferenceName = ConferenceName;
         this.Ranking = Ranking;
@@ -54,7 +54,7 @@ public class Conference extends Publication implements Serializable {
 
     
 
-    public Conference(String conferenceName, Long ranking, String series, String pages, Long volume, String publisher, String organization, String editor) {
+    public Conference(String conferenceName, Long ranking, String series, Long pages, Long volume, String publisher, String organization, String editor) {
         ConferenceName = conferenceName;
         Ranking = ranking;
         Series = series;
@@ -93,11 +93,11 @@ public class Conference extends Publication implements Serializable {
         Series = series;
     }
 
-    public String getPages() {
+    public Long getPages() {
         return Pages;
     }
 
-    public void setPages(String pages) {
+    public void setPages(Long pages) {
         Pages = pages;
     }
 

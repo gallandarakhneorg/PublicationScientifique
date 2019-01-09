@@ -26,9 +26,9 @@ public class Manuel extends Publication implements Serializable {
     private String Institution;
 
     @Column(nullable = true)
-    private String Number;
+    private Long Number;
 
-    public Manuel(String Organization, String Edition, String Institution, String Number, Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Set<Author> authors) {
+    public Manuel(String Organization, String Edition, String Institution, Long Number, Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Set<Author> authors) {
         super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords, authors);
         this.Organization = Organization;
         this.Edition = Edition;
@@ -38,7 +38,7 @@ public class Manuel extends Publication implements Serializable {
 
     
     
-    public Manuel(String organization, String edition, String institution, String number) {
+    public Manuel(String organization, String edition, String institution, Long number) {
         Organization = organization;
         Edition = edition;
         Institution = institution;
@@ -73,11 +73,11 @@ public class Manuel extends Publication implements Serializable {
         Institution = institution;
     }
 
-    public String getNumber() {
+    public Long getNumber() {
         return Number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(Long number) {
         Number = number;
     }
 

@@ -17,6 +17,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Pageable;
 import exception.ResourceNotFoundException;
+import fr.utbm.to52.dao.MemberDao;
+import fr.utbm.to52.domain.Article;
+import fr.utbm.to52.domain.Book;
+import fr.utbm.to52.domain.*;
 //import fr.utbm.to52.dao.MemberDao;
 import fr.utbm.to52.domain.Publication;
 import java.util.ArrayList;
@@ -35,42 +39,72 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 /**
  *
  * @author adilsoncapaia
+ * Cette class est un rest controller, elle sert a fournir aux utilisateurs 
+ * toutes les services concerné aux  publications and others specific functionalities
  */
 @RestController
-public class PublicationController {
-    
+public class PublicationController<T extends Publication> {
+    //object used to make query on the database, extract info 
+    // about the authors, and specific publications, 
     @Autowired
-    private PublicationDao pubDao;
-   
-//    private MemberDao memberDao;
+    private PublicationDao<T> pubDao;
+    @Autowired
+    private PublicationDao<Article> pubArtDao;
+    @Autowired
+    private PublicationDao<Book> pubBookDao;
+    @Autowired
+    private PublicationDao<InBook> pubInBookDao;
+    @Autowired
+    private PublicationDao<Conference> pubConfDao;
+    @Autowired
+    private PublicationDao<Proceeding> pubProcDao;
+    @Autowired
+    private PublicationDao<TechReport> pubRepDao;
+    private MemberDao memberDao;
     
+    // service that give all publications on the DB
     @GetMapping("/publications")
-    public Page<Publication> getPublications(Pageable page)
+    public Page<T> getPublications(Pageable page)
     {
+        
         return pubDao.findAll(page);
     }
     
-    
+    // service that give a specific publication, by id
     @GetMapping("/publications/id/{publicationId}")
-    public Publication getPulication(@PathVariable Long publicationId)
+    public T getPulication(@PathVariable Long publicationId)
     {
         return pubDao.findOne(publicationId);
     }
-    
+    // service that give publications that matche the specified englishtitle
     @GetMapping("/publications/title/{englishTtitle}")
-    public List<Publication> getPulicationByEnglishTitle(@PathVariable String englishTtitle)
+    public List<T> getPulicationByEnglishTitle(@PathVariable String englishTtitle)
     {
         
-        return pubDao.findByEnglishTitle(englishTtitle);
+        return pubDao.findByEnglishTitleContainingIgnoreCase(englishTtitle);
+    }
+    // service that give publications with matched type code
+    @GetMapping("/publications/type/{code}")
+    public List<Publication> getPulicationsByTypeCode(@PathVariable String code)
+    {
+        //.equalsIgnoreCase(code)
+        List<Publication> results = new ArrayList<Publication>();
+        for(Publication p : pubDao.findAll())
+        {
+            if(code.toUpperCase().contains(p.getPublicationType().getCode().toUpperCase()))
+                results.add(p);
+        }
+        return results;
     }
     
+    // Service that give all publications made in the specified year
     @GetMapping("/publications/year/{year}")
-    public List<Publication> getPulicationsByYear(@PathVariable Long year)
+    public List<T> getPulicationsByYear(@PathVariable Long year)
     {
         
         return pubDao.findByYear(year);
     }
-    
+    // 1 option Service that give all publications made in the specified range of year
     @GetMapping("/publications/year/begin/{yearBegin}/end/{yearEnd}")
     public List<Publication> getPulicationsByBetweenYears(@PathVariable Long yearBegin, @PathVariable Long yearEnd)
     {
@@ -90,7 +124,7 @@ public class PublicationController {
                 
         return listPub;
     }
-    
+    //2 options Service that give all publications made in the specified range of year
     @GetMapping("/publications/year/{yearBegin}/{yearEnd}")
     public List<Publication> getPulicationsByBetweenYears2(@PathVariable Long yearBegin, @PathVariable Long yearEnd)
     {
@@ -110,20 +144,56 @@ public class PublicationController {
         }
         
         
-                
+             
         return listPub;
     }
-    
-    @GetMapping("/publications/{frenchTitle}")
-    public List<Publication> getPulicationByFrenchTitle(@PathVariable String frenchTtitle)
+    // service that give all publications that match the specified french title
+    @GetMapping("/publications/franchtitle/{frenchTitle}")
+    public List<T> getPulicationByFrenchTitle(@PathVariable String frenchTtitle)
     {
-        return pubDao.findByFrenchTitle(frenchTtitle);
+        return pubDao.findByFrenchTitleContainingIgnoreCase(frenchTtitle);
     }
-    
+     // service that allow users to create a general publication
    @PostMapping("/publications")
-   public Publication createPublication(@Valid @RequestBody Publication publication)
-   {
-      return pubDao.save(publication);
+   public  T createPublication(@Valid @RequestBody T publication)
+   {  
+        //this.create((Article)publication);
+        return pubDao.save(publication);
+   }
+   // service that allow users to create an article
+   @PostMapping("/publications/create/arti/")
+   public  Article createPublication(@Valid @RequestBody Article publication)
+   {  
+        
+        return pubArtDao.save(publication);
+   }
+   // service that allow users to create a book
+   @PostMapping("/publications/create/book/")
+   public  Book createPublication(@Valid @RequestBody Book publication)
+   {  
+        
+        return pubBookDao.save(publication);
+   }
+   // service that allow users to create a conference
+   @PostMapping("/publications/create/conf/")
+   public  Conference createPublicationConf(@Valid @RequestBody Conference publication)
+   {  
+        
+        return pubConfDao.save(publication);
+   }
+   // service that allow users to create a tech report
+   @PostMapping("/publications/create/tech/")
+   public  TechReport createPublicationTech(@Valid @RequestBody TechReport publication)
+   {  
+        
+        return pubRepDao.save(publication);
+   }
+   // service that allow users to create a tech a InBook
+   @PostMapping("/publications/create/inbo")
+   public  InBook createPublicationInB(@Valid @RequestBody InBook publication)
+   {  
+        
+        return pubInBookDao.save(publication);
    }
     
 }

@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.DiscriminatorColumn;
@@ -181,6 +182,14 @@ public  class Article extends Publication implements Serializable {
         return "Article{" + "Journal=" + Journal + ", Publisher=" + Publisher + ", Kartil=" + Kartil + ", ImpactFactor=" + ImpactFactor + ", BestPaperRank=" + BestPaperRank + ", Number=" + Number + ", Editor=" + Editor + ", Volume=" + Volume + ", Pages=" + Pages + '}';
     }
     
-    
+    public String print(List<Author> author){
+        String listAuth="";
+        for (Author auth: author
+             ) {
+            listAuth=listAuth + " "+ auth.getMember().getLastName()+",";
+        }
+        return listAuth;
+    }
+
 }
 

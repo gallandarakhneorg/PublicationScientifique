@@ -19,10 +19,10 @@ public class InBook extends Publication {
     private String Chapter;
 
     @Column(nullable = true)
-    private String Pages;
+    private Long Pages;
 
     @Column(nullable = true)
-    private String Volume;
+    private Long Volume;
 
     @Column(nullable = true)
     private String Series;
@@ -33,7 +33,7 @@ public class InBook extends Publication {
     @Column(nullable = true)
     private String Publisher;
 
-    public InBook(String Chapter, String Pages, String Volume, String Series, String Edition, String Publisher, Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords,  Set<Author> authors) {
+    public InBook(String Chapter, Long Pages, Long Volume, String Series, String Edition, String Publisher, Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords,  Set<Author> authors) {
         super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords, authors);
         this.Chapter = Chapter;
         this.Pages = Pages;
@@ -45,7 +45,7 @@ public class InBook extends Publication {
 
     
 
-    public InBook(String chapter, String pages, String volume, String series, String edition, String publisher) {
+    public InBook(String chapter, Long pages, Long volume, String series, String edition, String publisher) {
         Chapter = chapter;
         Pages = pages;
         Volume = volume;
@@ -66,19 +66,19 @@ public class InBook extends Publication {
         Chapter = chapter;
     }
 
-    public String getPages() {
+    public Long getPages() {
         return Pages;
     }
 
-    public void setPages(String pages) {
+    public void setPages(Long pages) {
         Pages = pages;
     }
 
-    public String getVolume() {
+    public Long getVolume() {
         return Volume;
     }
 
-    public void setVolume(String volume) {
+    public void setVolume(Long volume) {
         Volume = volume;
     }
 

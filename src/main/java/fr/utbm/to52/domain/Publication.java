@@ -16,7 +16,7 @@ import static javax.persistence.EnumType.STRING;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="dtype")
-@DiscriminatorValue("Publication")
+//@DiscriminatorValue("Publication")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public  class Publication implements Serializable {
 
@@ -60,7 +60,9 @@ public  class Publication implements Serializable {
 
     @Column(nullable=true)
     private String keyWords;
+    public String type = "Publication";
     /*
+     decoment if you wnat to have this functionality
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_project", nullable = true)
     private Project project;  */

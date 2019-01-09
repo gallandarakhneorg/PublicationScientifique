@@ -23,7 +23,7 @@ public class Book extends Publication implements Serializable {
     private String Series;
 
     @Column(nullable = true)
-    private String Volume;
+    private Long Volume;
 
     @Column(nullable = true)
     private String Publisher;
@@ -31,7 +31,7 @@ public class Book extends Publication implements Serializable {
     @Column(nullable = true)
     private String Edition;
 
-    public Book(String Isbn, String Series, String Volume, String Publisher, String Edition, Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords,Set<Author> authors) {
+    public Book(String Isbn, String Series, Long Volume, String Publisher, String Edition, Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords,Set<Author> authors) {
         super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords,authors);
         this.Isbn = Isbn;
         this.Series = Series;
@@ -42,7 +42,7 @@ public class Book extends Publication implements Serializable {
 
     
 
-    public Book(String isbn, String series, String volume, String publisher, String edition) {
+    public Book(String isbn, String series, Long volume, String publisher, String edition) {
         Isbn = isbn;
         Series = series;
         Volume = volume;
@@ -70,11 +70,11 @@ public class Book extends Publication implements Serializable {
         Series = series;
     }
 
-    public String getVolume() {
+    public Long getVolume() {
         return Volume;
     }
 
-    public void setVolume(String volume) {
+    public void setVolume(Long volume) {
         Volume = volume;
     }
 

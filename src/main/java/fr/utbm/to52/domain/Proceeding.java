@@ -20,7 +20,7 @@ public class Proceeding extends Publication implements Serializable {
     private String Editor;
 
     @Column(nullable = true)
-    private String Volume;
+    private Long Volume;
 
     @Column(nullable = true)
     private String Series;
@@ -31,7 +31,7 @@ public class Proceeding extends Publication implements Serializable {
     @Column(nullable = true)
     private String Publisher;
 
-    public Proceeding(String Editor, String Volume, String Series, String Organization, String Publisher, Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Set<Author> authors) {
+    public Proceeding(String Editor, Long Volume, String Series, String Organization, String Publisher, Long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, Long year, Long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Set<Author> authors) {
         super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords, authors);
         this.Editor = Editor;
         this.Volume = Volume;
@@ -42,7 +42,7 @@ public class Proceeding extends Publication implements Serializable {
 
     
 
-    public Proceeding(String editor, String volume, String series, String organization, String publisher) {
+    public Proceeding(String editor, Long volume, String series, String organization, String publisher) {
         Editor = editor;
         Volume = volume;
         Series = series;
@@ -62,11 +62,11 @@ public class Proceeding extends Publication implements Serializable {
         Editor = editor;
     }
 
-    public String getVolume() {
+    public Long getVolume() {
         return Volume;
     }
 
-    public void setVolume(String volume) {
+    public void setVolume(Long volume) {
         Volume = volume;
     }
 

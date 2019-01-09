@@ -20,9 +20,9 @@ public class TechReport extends Publication implements Serializable {
     private String Institution;
 
     @Column(nullable = true)
-    private String Number;
+    private Long Number;
 
-    public TechReport(String Institution, String Number, long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, long year, long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Set<Author> authors) {
+    public TechReport(String Institution, Long Number, long idPublication, PublicationType publicationType, String englishTitle, String frenchTitle, long year, long month, String note, String linkImage, String pdfLink, String issn, String anAbstract, String keyWords, Set<Author> authors) {
         super(idPublication, publicationType, englishTitle, frenchTitle, year, month, note, linkImage, pdfLink, issn, anAbstract, keyWords, authors);
         this.Institution = Institution;
         this.Number = Number;
@@ -30,7 +30,7 @@ public class TechReport extends Publication implements Serializable {
 
     
 
-    public TechReport(String institution, String number) {
+    public TechReport(String institution, Long number) {
         Institution = institution;
         Number = number;
     }
@@ -47,11 +47,11 @@ public class TechReport extends Publication implements Serializable {
         Institution = institution;
     }
 
-    public String getNumber() {
+    public Long getNumber() {
         return Number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(Long number) {
         Number = number;
     }
 
